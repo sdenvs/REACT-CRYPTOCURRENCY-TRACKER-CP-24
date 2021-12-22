@@ -1,52 +1,56 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
+
 import CryptocurrenciesList from '../CryptocurrenciesList'
+
 import './index.css'
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+
+const apiUrl = 'https://apis.ccbp.in/crypto-currency-converter'
 
 class CryptocurrencyTracker extends Component {
-  state = {isLoading: true, trackerData: []}
+  state = {
+    cryptocurrenciesData: [],
+    isLoading: true,
+  }
 
   componentDidMount() {
-    this.getData()
+    this.getCryptocurrencies()
   }
 
-  getData = async () => {
-    const response = await fetch(
-      'https://apis.ccbp.in/crypto-currency-converter',
-    )
-    const data = await response.json()
-    const modifData = data.map(eachItem => ({
-      currencyLogo: eachItem.currency_logo,
-      currencyName: eachItem.currency_name,
-      euroValue: eachItem.euro_value,
-      id: eachItem.id,
-      usdValue: eachItem.usd_value,
-    }))
-    console.log(modifData)
-    this.setState({trackerData: modifData, isLoading: false})
+  getCryptocurrencies = async () => {
+    const response = await fetch(apiUrl)
+    const fetchedData = await response.json()
+
+    this.setState({
+      cryptocurrenciesData: fetchedData.map(eachCryptocurrency => ({
+        id: eachCryptocurrency.id,
+        currencyLogoUrl: eachCryptocurrency.currency_logo,
+        currencyName: eachCryptocurrency.currency_name,
+        usdValue: eachCryptocurrency.usd_value,
+        euroValue: eachCryptocurrency.euro_value,
+      })),
+      isLoading: false,
+    })
   }
+
+  renderCryptocurrenciesList = () => {
+    const {cryptocurrenciesData} = this.state
+
+    return <CryptocurrenciesList cryptocurrenciesData={cryptocurrenciesData} />
+  }
+
+  renderLoader = () => (
+    <div testid="loader">
+      <Loader type="Rings" color="#ffffff" height={80} width={80} />
+    </div>
+  )
 
   render() {
-    const {isLoading, trackerData} = this.state
+    const {isLoading} = this.state
+
     return (
-      <div className="bgContainer">
-        {isLoading ? (
-          <div className="d-flex flex-column align-items-center pt-5">
-            <Loader type="Oval" color="#00BFFF" height={50} width={50} />
-          </div>
-        ) : (
-          <div className="pt-5">
-            <h1 className="text-light font-weight-bold text-center">
-              Cryptocurrency Tracker
-            </h1>
-            <img
-              className="w-100 mb-2"
-              src="https://assets.ccbp.in/frontend/react-js/cryptocurrency-bg.png"
-            />
-            <CryptocurrenciesList trackerData={trackerData} />
-          </div>
-        )}
+      <div className="app-container">
+        {isLoading ? this.renderLoader() : this.renderCryptocurrenciesList()}
       </div>
     )
   }

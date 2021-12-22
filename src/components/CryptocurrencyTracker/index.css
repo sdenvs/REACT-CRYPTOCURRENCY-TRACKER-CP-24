@@ -1,13 +1,22 @@
-/* Write your CSS here */
-.bgContainer {
-  background-color: black;
-  background-size: cover;
-  height: 100vh;
-  padding: 20px;
-  overflow-y: scroll;
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  font-family: 'Roboto';
+  min-height: 100vh;
 }
-@media (min-width: 768px) {
-  .bgContainer {
-    padding: 50px;
+
+.error-message {
+  text-align: center;
+  color: #00e7ff;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 4px;
+}
+
+@media (min-width: 576px) {
+  .error-message {
+    font-size: 48px;
   }
 }

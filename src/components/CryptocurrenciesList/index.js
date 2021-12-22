@@ -1,23 +1,51 @@
+import {Component} from 'react'
+
 import CryptocurrencyItem from '../CryptocurrencyItem'
+
 import './index.css'
 
-const CryptocurrenciesList = props => {
-  const {trackerData} = props
-  return (
-    <table>
-      <thead className="theadbar">
-        <tr>
-          <th className="">Coin Type</th>
-          <th>USD</th>
-          <th>EURO</th>
-        </tr>
-      </thead>
-      <tbody>
-        {trackerData.map(eachItem => (
-          <CryptocurrencyItem details={eachItem} key={eachItem.id} />
-        ))}
-      </tbody>
-    </table>
+class CryptocurrenciesList extends Component {
+  renderCryptocurrenciesHeader = () => (
+    <div className="list-header">
+      <p className="list-coin-type-heading">Coin Type</p>
+      <div className="usd-and-euro-values-container">
+        <p className="list-coin-value-heading">USD</p>
+        <p className="list-coin-value-heading">EURO</p>
+      </div>
+    </div>
   )
+
+  renderCryptocurrenciesView = () => {
+    const {cryptocurrenciesData} = this.props
+
+    return (
+      <div className="cryptocurrencies-list-container">
+        {this.renderCryptocurrenciesHeader()}
+        <ul className="cryptocurrencies-list">
+          {cryptocurrenciesData.map(eachCryptocurrency => (
+            <CryptocurrencyItem
+              key={eachCryptocurrency.id}
+              cryptocurrencyDetails={eachCryptocurrency}
+            />
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  render() {
+    return (
+      <div className="cryptocurrencies-container">
+        <h1 className="heading">Cryptocurrency Tracker</h1>
+        <img
+          className="cryptocurrency-img"
+          src="https://assets.ccbp.in/frontend/react-js/cryptocurrency-bg.png"
+          alt="cryptocurrency"
+        />
+        {this.renderCryptocurrenciesView()}
+      </div>
+    )
+  }
 }
+
 export default CryptocurrenciesList
