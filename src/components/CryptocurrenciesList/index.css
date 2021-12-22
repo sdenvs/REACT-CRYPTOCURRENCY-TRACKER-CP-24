@@ -1,1 +1,17 @@
-/* Write your CSS code here */
+table {
+  width: 100%;
+  color: white;
+  border-style: solid;
+  border-width: 5px;
+  border-color: #00e7ff;
+  border-collapse: collapse;
+}
+
+thead {
+  font-size: 22px;
+  background-color: #092e33;
+  height: 60px;
+}
+th {
+  padding-left: 20px;
+}
